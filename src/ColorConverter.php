@@ -7,16 +7,18 @@ namespace Gubler\Color;
  *
  * @package Gubler\Color
  */
-class Converter
+class ColorConverter
 {
     public static function hexToRgb(string $hexValue)
     {
+        ColorValidator::hex($hexValue);
+
         #TODO: Implement
     }
 
     public static function rgbToHex(string $rgb)
     {
-        Validator::rgb($rgb);
+        ColorValidator::rgb($rgb);
 
 
         #TODO: Implement
@@ -24,14 +26,14 @@ class Converter
 
     public static function hexChannelToRgbChannel(string $hex)
     {
-        Validator::hexChannel($hex);
+        ColorValidator::hexChannel($hex);
 
         return hexdec($hex);
     }
 
     public static function rgbChannelToHexChannel(int $rgb)
     {
-        Validator::rgbChannel($rgb);
+        ColorValidator::rgbChannel($rgb);
 
         return dechex($rgb);
     }

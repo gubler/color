@@ -11,11 +11,11 @@ use Gubler\Color\Exception\InvalidRgbChannelException;
 use Gubler\Color\Exception\InvalidRgbColorException;
 
 /**
- * Class Validator
+ * Class ColorValidator
  *
  * @package Gubler\Color
  */
-class Validator
+class ColorValidator
 {
     const RGB_CHANNEL_MIN = 0;
     const RGB_CHANNEL_MAX = 255;

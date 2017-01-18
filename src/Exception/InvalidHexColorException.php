@@ -16,7 +16,7 @@ class InvalidHexColorException extends InvalidColorException
      */
     public function __construct(string $value)
     {
-        $message = 'Invalid hex color value. Value must start with # followed by 6 characters. `'.$value.'` provided';
+        $message = 'Invalid hex color value. Value must start with # followed by 3 or 6 characters. `'.$value.'` provided';
         parent::__construct($message);
     }
 }

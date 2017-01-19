@@ -13,7 +13,7 @@ class InvalidHexChannelExceptionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @expectedException Gubler\Color\Exception\InvalidHexChannelException
+     * @expectedException \Gubler\Color\Exception\InvalidHexChannelException
      * @expectedExceptionCode 500
      * @expectedExceptionMessage Invalid hex channel value. Only values between 00 and FF allowed. `GG` provided
      */

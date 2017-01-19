@@ -13,7 +13,7 @@ class InvalidHexColorExceptionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @expectedException Gubler\Color\Exception\InvalidHexColorException
+     * @expectedException \Gubler\Color\Exception\InvalidHexColorException
      * @expectedExceptionCode 500
      * @expectedExceptionMessage Invalid hex color value. Value must start with # followed by 3 or 6 characters. `YYYY` provided
      */

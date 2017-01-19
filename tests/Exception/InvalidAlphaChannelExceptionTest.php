@@ -13,7 +13,7 @@ class InvalidAlphaChannelExceptionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @expectedException Gubler\Color\Exception\InvalidAlphaChannelException
+     * @expectedException \Gubler\Color\Exception\InvalidAlphaChannelException
      * @expectedExceptionCode 500
      * @expectedExceptionMessage Invalid alpha channel value. Only values between 0 and 1 allowed. `2` provided
      */

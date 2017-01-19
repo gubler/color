@@ -13,7 +13,7 @@ class InvalidColorExceptionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @expectedException Gubler\Color\Exception\InvalidColorException
+     * @expectedException \Gubler\Color\Exception\InvalidColorException
      * @expectedExceptionCode 500
      * @expectedExceptionMessage Invalid Color Provided
      */
@@ -24,7 +24,7 @@ class InvalidColorExceptionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Gubler\Color\Exception\InvalidColorException
+     * @expectedException \Gubler\Color\Exception\InvalidColorException
      * @expectedExceptionCode 500
      * @expectedExceptionMessage Moo
      */
@@ -35,7 +35,7 @@ class InvalidColorExceptionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Gubler\Color\Exception\InvalidColorException
+     * @expectedException \Gubler\Color\Exception\InvalidColorException
      * @expectedExceptionCode 501
      * @expectedExceptionMessage Invalid Color Provided
      */

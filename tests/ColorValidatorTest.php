@@ -11,33 +11,63 @@ use Gubler\Color\ColorValidator;
  */
 class ColorValidatorTest extends \PHPUnit_Framework_TestCase
 {
-    /** @test */
+    // ----------------------------------------
+    // ::check tests
+    // ----------------------------------------
+
+    /**
+     * @test
+     * @covers \Gubler\Color\ColorValidator::check
+     */
     public function check_matches_valid_colors()
     {
         $validator = new ColorValidator();
 
         self::assertTrue($validator->check('rgb(1,1,1)'));
+        self::assertTrue($validator->check('rgb(1%,1%,1%)'));
         self::assertTrue($validator->check('rgba(1,1,1,1)'));
-        self::assertTrue($validator->check('#111111'));
-        self::assertTrue($validator->check('#111'));
+        self::assertTrue($validator->check('rgba(1%,1%,1%,0.1)'));
+        self::assertTrue($validator->check('#123456'));
+        self::assertTrue($validator->check('#abc'));
+        self::assertTrue($validator->check('hsl(1,1%,1%)'));
+        self::assertTrue($validator->check('hsla(1,1%,1%,0.1)'));
+
 
         self::assertTrue(ColorValidator::check('rgb(1,1,1)'));
         self::assertTrue(ColorValidator::check('rgba(1,1,1,1)'));
-        self::assertTrue(ColorValidator::check('#111111'));
-        self::assertTrue(ColorValidator::check('#111'));
+        self::assertTrue(ColorValidator::check('rgb(1%,1%,1%)'));
+        self::assertTrue(ColorValidator::check('rgba(1%,1%,1%,1)'));
+        self::assertTrue(ColorValidator::check('#123456'));
+        self::assertTrue(ColorValidator::check('#abc'));
+        self::assertTrue(ColorValidator::check('hsl(1,1%,1%)'));
+        self::assertTrue(ColorValidator::check('hsla(1,1%,1%,0.1)'));
     }
 
     /**
      * @test
-     * @expectedException Gubler\Color\Exception\InvalidColorException
+     * @covers \Gubler\Color\ColorValidator::check
      */
     public function check_errors_invalid_colors()
     {
         $validator = new ColorValidator();
-        $validator->check('moo');
+
+        self::assertFalse($validator->check('moo'));
+        self::assertFalse($validator->check('rgb(1)'));
+        self::assertFalse($validator->check('hsl(2)'));
+        self::assertFalse($validator->check('rgba(1)'));
+        self::assertFalse($validator->check('rgba(1)'));
+        self::assertFalse($validator->check('#1'));
+        self::assertFalse($validator->check('#1234'));
     }
 
-    /** @test */
+    // ----------------------------------------
+    // Channel tests
+    // ----------------------------------------
+
+    /**
+     * @test
+     * @covers \Gubler\Color\ColorValidator::hexChannel
+     */
     public function hex_channel_matches_hex_value()
     {
         $validator = new ColorValidator();
@@ -47,7 +77,8 @@ class ColorValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Gubler\Color\Exception\InvalidHexChannelException
+     * @expectedException \Gubler\Color\Exception\InvalidHexChannelException
+     * @covers \Gubler\Color\ColorValidator::hexChannel
      */
     public function hex_channel_errors_invalid_hex_value()
     {
@@ -55,7 +86,10 @@ class ColorValidatorTest extends \PHPUnit_Framework_TestCase
         $validator->hexChannel('moo');
     }
 
-    /** @test */
+    /**
+     * @test
+     * @covers \Gubler\Color\ColorValidator::rgbChannel
+     */
     public function rgb_channel_matches_rgb_value()
     {
         $validator = new ColorValidator();
@@ -65,7 +99,8 @@ class ColorValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Gubler\Color\Exception\InvalidRgbChannelException
+     * @expectedException \Gubler\Color\Exception\InvalidRgbChannelException
+     * @covers \Gubler\Color\ColorValidator::rgbChannel
      */
     public function rgb_channel_errors_invalid_rgb_value()
     {
@@ -73,7 +108,10 @@ class ColorValidatorTest extends \PHPUnit_Framework_TestCase
         $validator->rgbChannel(256);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @covers \Gubler\Color\ColorValidator::alphaChannel
+     */
     public function alpha_channel_matches_alpha_value()
     {
         $validator = new ColorValidator();
@@ -84,7 +122,8 @@ class ColorValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Gubler\Color\Exception\InvalidAlphaChannelException
+     * @expectedException \Gubler\Color\Exception\InvalidAlphaChannelException
+     * @covers \Gubler\Color\ColorValidator::alphaChannel
      */
     public function alpha_channel_errors_invalid_alpha_value()
     {
@@ -92,17 +131,69 @@ class ColorValidatorTest extends \PHPUnit_Framework_TestCase
         $validator->alphaChannel(1.1);
     }
 
-    /** @test */
-    public function hex_matches_hex_color()
+    /**
+     * @test
+     * @covers \Gubler\Color\ColorValidator::percentChannel
+     */
+    public function percent_channel_matches_percent_value()
     {
         $validator = new ColorValidator();
-        self::assertTrue($validator->hex('#ffffff'));
-        self::assertTrue(ColorValidator::hex('#1A1E00'));
+        self::assertTrue($validator->percentChannel('100%'));
+        self::assertTrue($validator->percentChannel('0%'));
+        self::assertTrue(ColorValidator::percentChannel('50%'));
     }
 
     /**
      * @test
-     * @expectedException Gubler\Color\Exception\InvalidHexColorException
+     * @expectedException \Gubler\Color\Exception\InvalidPercentChannelException
+     * @covers \Gubler\Color\ColorValidator::percentChannel
+     */
+    public function percent_channel_errors_invalid_percent()
+    {
+        ColorValidator::percentChannel('a');
+    }
+
+    /**
+     * @test
+     * @covers \Gubler\Color\ColorValidator::hueChannel
+     */
+    public function hue_channel_matches_hue_value()
+    {
+        $validator = new ColorValidator();
+        self::assertTrue($validator->hueChannel(135.33433));
+        self::assertTrue($validator->hueChannel((float) -10));
+        self::assertTrue(ColorValidator::hueChannel(10.5));
+    }
+
+    /**
+     * @test
+     * @expectedException \Gubler\Color\Exception\InvalidHueChannelException
+     * @covers \Gubler\Color\ColorValidator::hueChannel
+     */
+    public function hue_channel_errors_invalid_hue()
+    {
+        ColorValidator::hueChannel('m');
+    }
+
+    // ----------------------------------------
+    // Color tests
+    // ----------------------------------------
+
+    /**
+     * @test
+     * @covers \Gubler\Color\ColorValidator::hex
+     */
+    public function hex_matches_hex_color()
+    {
+        $validator = new ColorValidator();
+        self::assertTrue($validator->hex('#abcdef'));
+        self::assertTrue(ColorValidator::hex('#123456'));
+    }
+
+    /**
+     * @test
+     * @expectedException \Gubler\Color\Exception\InvalidHexColorException
+     * @covers \Gubler\Color\ColorValidator::hex
      */
     public function hex_errors_invalid_hex_color()
     {
@@ -110,7 +201,10 @@ class ColorValidatorTest extends \PHPUnit_Framework_TestCase
         $validator->hex('#FFF');
     }
 
-    /** @test */
+    /**
+     * @test
+     * @covers \Gubler\Color\ColorValidator::shortHex
+     */
     public function short_hex_matches_short_hex_color()
     {
         $validator = new ColorValidator();
@@ -120,7 +214,8 @@ class ColorValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Gubler\Color\Exception\InvalidHexColorException
+     * @expectedException \Gubler\Color\Exception\InvalidHexColorException
+     * @covers \Gubler\Color\ColorValidator::shortHex
      */
     public function short_hex_errors_invalid_short_hex_color()
     {
@@ -128,7 +223,10 @@ class ColorValidatorTest extends \PHPUnit_Framework_TestCase
         $validator->shortHex('#FFFfff');
     }
 
-    /** @test */
+    /**
+     * @test
+     * @covers \Gubler\Color\ColorValidator::rgb
+     */
     public function rgb_matches_rgb_color()
     {
         $validator = new ColorValidator();
@@ -138,15 +236,19 @@ class ColorValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Gubler\Color\Exception\InvalidRgbColorException
+     * @expectedException \Gubler\Color\Exception\InvalidRgbColorException
+     * @covers \Gubler\Color\ColorValidator::rgb
      */
     public function rgb_errors_invalid_rgb_color()
     {
         $validator = new ColorValidator();
-        $validator->rgb('rgb(0,0,1000)');
+        $validator->rgb('rg(0,0,1000)');
     }
 
-    /** @test */
+    /**
+     * @test
+     * @covers \Gubler\Color\ColorValidator::rgba
+     */
     public function rgba_matches_rgba_color()
     {
         $validator = new ColorValidator();
@@ -156,11 +258,100 @@ class ColorValidatorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException Gubler\Color\Exception\InvalidRgbaColorException
+     * @expectedException \Gubler\Color\Exception\InvalidRgbaColorException
+     * @covers \Gubler\Color\ColorValidator::rgba
      */
     public function rgba_errors_invalid_rgba_color()
     {
         $validator = new ColorValidator();
-        $validator->rgba('rgba(0,0,100,3)');
+        $validator->rgba('rgb(0,0,100,3)');
+    }
+
+    /**
+     * @test
+     * @covers \Gubler\Color\ColorValidator::rgbPercent
+     */
+    public function rgb_percent_matches_rgb_percent_color()
+    {
+        $validator = new ColorValidator();
+        self::assertTrue($validator->rgbPercent('rgb(1%,1%,1%)'));
+        self::assertTrue(ColorValidator::rgbPercent('rgb(0%,100%,0%)'));
+    }
+
+    /**
+     * @test
+     * @expectedException \Gubler\Color\Exception\InvalidRgbColorException
+     * @covers \Gubler\Color\ColorValidator::rgbPercent
+     */
+    public function rgb_percent_errors_invalid_rgb_percent_color()
+    {
+        $validator = new ColorValidator();
+        $validator->rgbPercent('rg(0,0,1000)');
+    }
+
+    /**
+     * @test
+     * @covers \Gubler\Color\ColorValidator::rgbaPercent
+     */
+    public function rgba_percent_matches_rgba_percent_color()
+    {
+        $validator = new ColorValidator();
+        self::assertTrue($validator->rgbaPercent('rgba(1%,1%,1%,0.2)'));
+        self::assertTrue(ColorValidator::rgbaPercent('rgba(0%,100%,0%,1)'));
+    }
+
+    /**
+     * @test
+     * @expectedException \Gubler\Color\Exception\InvalidRgbaColorException
+     * @covers \Gubler\Color\ColorValidator::rgbaPercent
+     */
+    public function rgba_percent_errors_invalid_rgba_percent_color()
+    {
+        $validator = new ColorValidator();
+        $validator->rgbaPercent('rg(0,0,100,3)');
+    }
+
+    /**
+     * @test
+     * @covers \Gubler\Color\ColorValidator::hsl
+     */
+    public function hsl_matches_hsl_color()
+    {
+        $validator = new ColorValidator();
+        self::assertTrue($validator->hsl('hsl(1.5,1%,1%)'));
+        self::assertTrue(ColorValidator::hsl('hsl(100.344,50%,5%)'));
+    }
+
+    /**
+     * @test
+     * @expectedException \Gubler\Color\Exception\InvalidHslColorException
+     * @covers \Gubler\Color\ColorValidator::hsl
+     */
+    public function hsl_errors_invalid_hsl_color()
+    {
+        $validator = new ColorValidator();
+        $validator->hsl('moo');
+    }
+
+    /**
+     * @test
+     * @covers \Gubler\Color\ColorValidator::hsla
+     */
+    public function hsla_matches_hsla_color()
+    {
+        $validator = new ColorValidator();
+        self::assertTrue($validator->hsla('hsla(123.32,1%,100%,0.2)'));
+        self::assertTrue(ColorValidator::hsla('hsla(0,55%,0%,1)'));
+    }
+
+    /**
+     * @test
+     * @expectedException \Gubler\Color\Exception\InvalidHslaColorException
+     * @covers \Gubler\Color\ColorValidator::hsla
+     */
+    public function hsla_errors_invalid_hsla_color()
+    {
+        $validator = new ColorValidator();
+        $validator->hsla('moo');
     }
 }

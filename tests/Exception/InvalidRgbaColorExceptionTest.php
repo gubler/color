@@ -13,7 +13,7 @@ class InvalidRgbaColorExceptionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
-     * @expectedException Gubler\Color\Exception\InvalidRgbaColorException
+     * @expectedException \Gubler\Color\Exception\InvalidRgbaColorException
      * @expectedExceptionCode 500
      * @expectedExceptionMessage Invalid RGBA color value. `moo` provided
      */

@@ -29,6 +29,11 @@ class ColorParser
     /** @var float */
     protected $alpha;
 
+    /**
+     * ColorParser constructor.
+     *
+     * @param string $color
+     */
     public function __construct(string $color)
     {
         switch(self::colorType($color)) {
@@ -57,7 +62,6 @@ class ColorParser
                 $this->parseHsla($color);
                 break;
         }
-
     }
 
     /**

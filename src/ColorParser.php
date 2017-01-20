@@ -141,7 +141,7 @@ class ColorParser
             return 'shortHex';
         }
 
-        throw new InvalidColorException('Unrecognized color. '.$color.' provided.');
+        throw new InvalidColorException('Unrecognized color. `'.$color.'` provided.');
     }
 
     /**
@@ -285,6 +285,6 @@ class ColorParser
     {
         $percent = (int) $value;
 
-        return (int) floor($percent * 2.55);
+        return (int) round($percent * 2.55);
     }
 }

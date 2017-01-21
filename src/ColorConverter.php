@@ -87,12 +87,10 @@ class ColorConverter
      */
     public function hslToRgb(float $hue, int $saturation, int $luminosity)
     {
-        $red = null;
-        $green = null;
-        $blue = null;
-
         $hue /= 60;
-        if ($hue < 0) $hue = 6 - fmod(-$hue, 6);
+        if ($hue < 0) {
+            $hue = 6 - fmod(-$hue, 6);
+        }
         $hue = fmod($hue, 6);
 
         $saturation = max(0, min(1, $saturation / 100));

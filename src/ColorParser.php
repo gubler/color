@@ -130,7 +130,7 @@ class ColorParser
      */
     protected function parseColor(string $color)
     {
-        switch($this->colorType($color)) {
+        switch ($this->colorType($color)) {
             case 'rgb':
                 $this->parseRgb($color);
                 break;

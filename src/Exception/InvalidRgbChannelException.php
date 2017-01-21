@@ -3,9 +3,7 @@
 namespace Gubler\Color\Exception;
 
 /**
- * Class InvalidRgbChannelException
- *
- * @package Gubler\Color\Exception
+ * Class InvalidRgbChannelException.
  */
 class InvalidRgbChannelException extends InvalidColorException
 {

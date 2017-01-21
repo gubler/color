@@ -5,9 +5,7 @@ namespace Gubler\Color\Test\Exception;
 use Gubler\Color\Exception\InvalidAlphaChannelException;
 
 /**
- * Class InvalidAlphaChannelExceptionTest
- *
- * @package Gubler\Color\Test\Exception
+ * Class InvalidAlphaChannelExceptionTest.
  */
 class InvalidAlphaChannelExceptionTest extends \PHPUnit_Framework_TestCase
 {

@@ -5,9 +5,7 @@ namespace Gubler\Color\Test\Exception;
 use Gubler\Color\Exception\InvalidHslColorException;
 
 /**
- * Class InvalidHslColorExceptionTest
- *
- * @package Gubler\Color\Test\Exception
+ * Class InvalidHslColorExceptionTest.
  */
 class InvalidHslColorExceptionTest extends \PHPUnit_Framework_TestCase
 {

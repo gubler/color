@@ -5,9 +5,7 @@ namespace Gubler\Color\Test\Exception;
 use Gubler\Color\Exception\InvalidColorException;
 
 /**
- * Class InvalidColorExceptionTest
- *
- * @package Gubler\Color\Test\Exception
+ * Class InvalidColorExceptionTest.
  */
 class InvalidColorExceptionTest extends \PHPUnit_Framework_TestCase
 {

@@ -5,9 +5,7 @@ namespace Gubler\Color;
 use Gubler\Color\Exception\InvalidColorException;
 
 /**
- * Parse CSS color strings
- *
- * @package Gubler\Color
+ * Parse CSS color strings.
  */
 class ColorParser
 {
@@ -49,7 +47,7 @@ class ColorParser
     }
 
     /**
-     * Return an array of RGBA values
+     * Return an array of RGBA values.
      *
      * @return array
      */
@@ -59,12 +57,12 @@ class ColorParser
             'red' => $this->red,
             'green' => $this->green,
             'blue' => $this->blue,
-            'alpha' => $this->alpha
+            'alpha' => $this->alpha,
         ];
     }
 
     /**
-     * Parse a CSS color string and return an RGBA array
+     * Parse a CSS color string and return an RGBA array.
      *
      * @param string $color
      *
@@ -73,6 +71,7 @@ class ColorParser
     public function parse(string $color)
     {
         $this->parseColor($color);
+
         return $this;
     }
 
@@ -92,33 +91,42 @@ class ColorParser
      * @param string $color
      *
      * @return string
+     *
      * @throws InvalidColorException if string does not match a recognized color type
      */
     public function colorType(string $color)
     {
         if (preg_match(self::RGB_REGEX, $color)) {
             $this->validator->rgb($color);
+
             return 'rgb';
         } elseif (preg_match(self::RGBA_REGEX, $color)) {
             $this->validator->rgba($color);
+
             return 'rgba';
         } elseif (preg_match(self::RGB_PERCENT_REGEX, $color)) {
             $this->validator->rgbPercent($color);
+
             return 'rgbPercent';
         } elseif (preg_match(self::RGBA_PERCENT_REGEX, $color)) {
             $this->validator->rgbaPercent($color);
+
             return 'rgbaPercent';
         } elseif (preg_match(self::HSL_REGEX, $color)) {
             $this->validator->hsl($color);
+
             return 'hsl';
         } elseif (preg_match(self::HSLA_REGEX, $color)) {
             $this->validator->hsla($color);
+
             return 'hsla';
         } elseif (preg_match(self::LONG_HEX_REGEX, $color)) {
             $this->validator->hex($color);
+
             return 'hex';
         } elseif (preg_match(self::SHORT_HEX_REGEX, $color)) {
             $this->validator->shortHex($color);
+
             return 'shortHex';
         }
 

@@ -5,9 +5,7 @@ namespace Gubler\Color\Test;
 use Gubler\Color\Color;
 
 /**
- * Class ColorTest
- *
- * @package Gubler\Color\Test
+ * Class ColorTest.
  */
 class ColorTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,7 +18,6 @@ class ColorTest extends \PHPUnit_Framework_TestCase
         // rgb(18, 49, 35)
         // hsl(153, 46%, 13%)
         $this->color = new Color('#123123');
-
     }
 
     /** @test */

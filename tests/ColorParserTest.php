@@ -5,9 +5,7 @@ namespace Gubler\Color\Test;
 use Gubler\Color\ColorParser;
 
 /**
- * Class ColorParserTest
- *
- * @package Gubler\Color\Test
+ * Class ColorParserTest.
  */
 class ColorParserTest extends \PHPUnit_Framework_TestCase
 {

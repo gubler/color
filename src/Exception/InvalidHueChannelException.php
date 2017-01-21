@@ -3,9 +3,7 @@
 namespace Gubler\Color\Exception;
 
 /**
- * Class InvalidHueChannelException
- *
- * @package Gubler\Color\Exception
+ * Class InvalidHueChannelException.
  */
 class InvalidHueChannelException extends InvalidColorException
 {

@@ -3,9 +3,7 @@
 namespace Gubler\Color;
 
 /**
- * Class Color
- *
- * @package Gubler\Color
+ * Class Color.
  */
 class Color
 {
@@ -34,7 +32,7 @@ class Color
     // ----------------------------------------
 
     /**
-     * Construct from string
+     * Construct from string.
      *
      * @param string $color
      */
@@ -107,6 +105,7 @@ class Color
     // ----------------------------------------
     // CONTRAST TEXT COLOR
     // ----------------------------------------
+
     /**
      * Returns a Color of black or white to contrast against current color.
      *
@@ -212,7 +211,7 @@ class Color
 
     /**
      * Converts color to YIQ color space and determines perceived brightness
-     * on a 0-255 scale
+     * on a 0-255 scale.
      *
      * @return int
      */

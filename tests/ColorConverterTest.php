@@ -71,11 +71,17 @@ class ColorConverterTest extends \PHPUnit_Framework_TestCase
     public function converts_hsl_to_rgb()
     {
         $color = [
+            'red' => 191,
+            'green' => 64,
+            'blue' => 106,
+        ];
+        self::assertEquals($color, $this->converter->hslToRgb(-20, 50, 50));
+
+        $color = [
             'red' => 64,
             'green' => 191,
             'blue' => 70,
         ];
-
         self::assertEquals($color, $this->converter->hslToRgb(123, 50, 50));
 
         $color = [

@@ -197,14 +197,14 @@ class ColorConverter
     }
 
     /**
-     * @param float $rgb
+     * @param int $rgb
      *
      * @return string
      */
-    public function rgbChannelToHexChannel(float $rgb)
+    public function rgbChannelToHexChannel(int $rgb)
     {
         $this->validator->rgbChannel($rgb);
 
-        return dechex(round($rgb));
+        return str_pad(dechex($rgb), 2, '0', STR_PAD_LEFT);
     }
 }

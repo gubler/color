@@ -105,6 +105,25 @@ class Color
     }
 
     // ----------------------------------------
+    // CONTRAST TEXT COLOR
+    // ----------------------------------------
+    /**
+     * Returns a Color of black or white to contrast against current color.
+     *
+     * This color can be used for to determine what color to use for text on the current color.
+     *
+     * @return Color
+     */
+    public function contrastTextColor()
+    {
+        if ($this->perceivedBrightness() > 128) {
+            return new self('rgba(0, 0, 0, '.$this->alpha.')');
+        }
+
+        return new self('rgba(255, 255, 255, '.$this->alpha.')');
+    }
+
+    // ----------------------------------------
     // UPDATERS
     // ----------------------------------------
 
@@ -185,5 +204,24 @@ class Color
         $this->red = $rgb['red'];
         $this->blue = $rgb['blue'];
         $this->green = $rgb['green'];
+    }
+
+    // ----------------------------------------
+    // Internal converter
+    // ----------------------------------------
+
+    /**
+     * Converts color to YIQ color space and determines perceived brightness
+     * on a 0-255 scale
+     *
+     * @return int
+     */
+    protected function perceivedBrightness()
+    {
+        return (
+            ($this->red * 299) +
+            ($this->green * 587) +
+            ($this->blue * 114)
+        ) / 1000;
     }
 }

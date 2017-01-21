@@ -94,4 +94,32 @@ class ColorTest extends \PHPUnit_Framework_TestCase
         self::assertEquals('#326496', $this->color->hex());
         self::assertEquals('hsla(210, 50%, 39%, 1)', $this->color->hsla());
     }
+
+    /** @test */
+    public function calculates_contrast_text_color()
+    {
+        $this->color->setHex('#ef4444');
+        self::assertEquals('#FFFFFF', $this->color->contrastTextColor()->hex());
+
+        $this->color->setHex('#009f75');
+        self::assertEquals('#FFFFFF', $this->color->contrastTextColor()->hex());
+
+        $this->color->setHex('#394ba0');
+        self::assertEquals('#FFFFFF', $this->color->contrastTextColor()->hex());
+
+        $this->color->setHex('#d54799');
+        self::assertEquals('#FFFFFF', $this->color->contrastTextColor()->hex());
+
+        $this->color->setHex('#faa31b');
+        self::assertEquals('#000000', $this->color->contrastTextColor()->hex());
+
+        $this->color->setHex('#88c6ed');
+        self::assertEquals('#000000', $this->color->contrastTextColor()->hex());
+
+        $this->color->setHex('#fff000');
+        self::assertEquals('#000000', $this->color->contrastTextColor()->hex());
+
+        $this->color->setHex('#82c341');
+        self::assertEquals('#000000', $this->color->contrastTextColor()->hex());
+    }
 }

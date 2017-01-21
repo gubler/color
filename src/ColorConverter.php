@@ -3,9 +3,7 @@
 namespace Gubler\Color;
 
 /**
- * Class Converter
- *
- * @package Gubler\Color
+ * Class Converter.
  */
 class ColorConverter
 {
@@ -22,6 +20,7 @@ class ColorConverter
     {
         $this->validator = new ColorValidator();
     }
+
     /**
      * @param string $hexValue
      *
@@ -77,7 +76,7 @@ class ColorConverter
     }
 
     /**
-     * Convert HSL values to RGB array
+     * Convert HSL values to RGB array.
      *
      * @param float $hue
      * @param int   $saturation

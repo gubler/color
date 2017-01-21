@@ -15,9 +15,7 @@ use Gubler\Color\Exception\InvalidRgbChannelException;
 use Gubler\Color\Exception\InvalidRgbColorException;
 
 /**
- * Class ColorValidator
- *
- * @package Gubler\Color
+ * Class ColorValidator.
  */
 class ColorValidator
 {
@@ -36,11 +34,12 @@ class ColorValidator
     const HSLA_REGEX = '/^hsla\(\s*(.*)\s*,\s*(.*%)\s*,\s*(.*%)\s*,\s*(.*)\s*\)$/';
 
     /**
-     * Checks if a string is a valid color
+     * Checks if a string is a valid color.
      *
      * @param string $color
      *
      * @return bool
+     *
      * @throws InvalidColorException
      */
     public function check(string $color): bool
@@ -62,11 +61,12 @@ class ColorValidator
     }
 
     /**
-     * Validate that a hex channel falls within 00-FF (case insensitive)
+     * Validate that a hex channel falls within 00-FF (case insensitive).
      *
      * @param string $hex
      *
      * @return bool
+     *
      * @throws InvalidHexChannelException
      */
     public function hexChannel(string $hex)
@@ -82,6 +82,7 @@ class ColorValidator
      * @param mixed $rgb
      *
      * @return bool
+     *
      * @throws InvalidRgbChannelException
      */
     public function rgbChannel(int $rgb)
@@ -98,6 +99,7 @@ class ColorValidator
      * @param mixed $rgb
      *
      * @return bool
+     *
      * @throws InvalidPercentChannelException
      */
     public function percentChannel($rgb)
@@ -118,6 +120,7 @@ class ColorValidator
      * @param float $alpha
      *
      * @return bool
+     *
      * @throws InvalidAlphaChannelException
      */
     public function alphaChannel(float $alpha)
@@ -133,6 +136,7 @@ class ColorValidator
      * @param float $hue
      *
      * @return bool
+     *
      * @throws InvalidHueChannelException
      */
     public function hueChannel($hue)
@@ -145,11 +149,12 @@ class ColorValidator
     }
 
     /**
-     * Validate hex color string
+     * Validate hex color string.
      *
      * @param string $hex
      *
      * @return bool
+     *
      * @throws InvalidHexColorException
      */
     public function hex(string $hex)
@@ -168,11 +173,12 @@ class ColorValidator
     }
 
     /**
-     * Validate short hex color string
+     * Validate short hex color string.
      *
      * @param string $hex
      *
      * @return bool
+     *
      * @throws InvalidHexColorException
      */
     public function shortHex(string $hex)
@@ -192,11 +198,12 @@ class ColorValidator
     }
 
     /**
-     * Validate RGB string
+     * Validate RGB string.
      *
      * @param string $rgb
      *
      * @return bool
+     *
      * @throws InvalidRgbColorException
      */
     public function rgb(string $rgb)
@@ -216,11 +223,12 @@ class ColorValidator
     }
 
     /**
-     * Validate RGBA string
+     * Validate RGBA string.
      *
      * @param string $rgba
      *
      * @return bool
+     *
      * @throws InvalidRgbaColorException
      */
     public function rgba(string $rgba)
@@ -241,11 +249,12 @@ class ColorValidator
     }
 
     /**
-     * Validate RGB string
+     * Validate RGB string.
      *
      * @param string $rgb
      *
      * @return bool
+     *
      * @throws InvalidRgbColorException
      */
     public function rgbPercent(string $rgb)
@@ -265,11 +274,12 @@ class ColorValidator
     }
 
     /**
-     * Validate RGBA string
+     * Validate RGBA string.
      *
      * @param string $rgba
      *
      * @return bool
+     *
      * @throws InvalidRgbaColorException
      */
     public function rgbaPercent(string $rgba)
@@ -290,11 +300,12 @@ class ColorValidator
     }
 
     /**
-     * Validate HSL string
+     * Validate HSL string.
      *
      * @param string $hsl
      *
      * @return bool
+     *
      * @throws InvalidHslColorException
      */
     public function hsl(string $hsl)
@@ -314,11 +325,12 @@ class ColorValidator
     }
 
     /**
-     * Validate HSLA string
+     * Validate HSLA string.
      *
      * @param string $hsla
      *
      * @return bool
+     *
      * @throws InvalidHslaColorException
      */
     public function hsla(string $hsla)

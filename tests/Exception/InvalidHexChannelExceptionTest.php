@@ -5,9 +5,7 @@ namespace Gubler\Color\Test\Exception;
 use Gubler\Color\Exception\InvalidHexChannelException;
 
 /**
- * Class InvalidHexChannelExceptionTest
- *
- * @package Gubler\Color\Test\Exception
+ * Class InvalidHexChannelExceptionTest.
  */
 class InvalidHexChannelExceptionTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,5 +19,4 @@ class InvalidHexChannelExceptionTest extends \PHPUnit_Framework_TestCase
     {
         throw new InvalidHexChannelException('GG');
     }
-
 }

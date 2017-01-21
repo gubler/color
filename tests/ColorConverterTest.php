@@ -5,9 +5,7 @@ namespace Gubler\Color\Test;
 use Gubler\Color\ColorConverter;
 
 /**
- * Class ColorConverterTest
- *
- * @package Gubler\Color\Test
+ * Class ColorConverterTest.
  */
 class ColorConverterTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,7 +13,7 @@ class ColorConverterTest extends \PHPUnit_Framework_TestCase
     protected $converter;
 
     /**
-     * Set Up
+     * Set Up.
      */
     public function setUp()
     {

@@ -5,9 +5,7 @@ namespace Gubler\Color\Test;
 use Gubler\Color\ColorValidator;
 
 /**
- * Class ColorValidatorTest
- *
- * @package Gubler\Color\Test
+ * Class ColorValidatorTest.
  */
 class ColorValidatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,7 +13,7 @@ class ColorValidatorTest extends \PHPUnit_Framework_TestCase
     protected $validator;
 
     /**
-     * Set Up
+     * Set Up.
      */
     public function setUp()
     {
@@ -48,7 +46,6 @@ class ColorValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function check_errors_invalid_colors()
     {
-
         self::assertFalse($this->validator->check('moo'));
         self::assertFalse($this->validator->check('rgb(1)'));
         self::assertFalse($this->validator->check('hsl(2)'));

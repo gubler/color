@@ -3,9 +3,7 @@
 namespace Gubler\Color\Exception;
 
 /**
- * Class InvalidRgbaColorException
- *
- * @package Gubler\Color\Exception
+ * Class InvalidRgbaColorException.
  */
 class InvalidRgbaColorException extends InvalidColorException
 {

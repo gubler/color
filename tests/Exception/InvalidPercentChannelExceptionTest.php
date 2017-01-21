@@ -5,9 +5,7 @@ namespace Gubler\Color\Test\Exception;
 use Gubler\Color\Exception\InvalidPercentChannelException;
 
 /**
- * Class InvalidPercentChannelExceptionTest
- *
- * @package Gubler\Color\Test\Exception
+ * Class InvalidPercentChannelExceptionTest.
  */
 class InvalidPercentChannelExceptionTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,5 +19,4 @@ class InvalidPercentChannelExceptionTest extends \PHPUnit_Framework_TestCase
     {
         throw new InvalidPercentChannelException(4);
     }
-
 }

@@ -3,9 +3,7 @@
 namespace Gubler\Color\Exception;
 
 /**
- * Class InvalidHslColorException
- *
- * @package Gubler\Color\Exception
+ * Class InvalidHslColorException.
  */
 class InvalidHslColorException extends InvalidColorException
 {

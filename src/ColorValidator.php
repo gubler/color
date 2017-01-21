@@ -43,15 +43,17 @@ class ColorValidator
      * @return bool
      * @throws InvalidColorException
      */
-    public static function check(string $color): bool
+    public function check(string $color): bool
     {
         // parse determines the color type and checks the validity of the color
         // values (using other methods in this class) or throws an InvalidColorException.
         // So we might was well just use that. If the parsing doesn't throw an error, then
         // the color is valid. Otherwise, trap the exception and return false.
 
+        $parser = new ColorParser();
+
         try {
-            ColorParser::parse($color);
+            $parser->parse($color);
         } catch (\Exception $e) {
             return false;
         }
@@ -67,7 +69,7 @@ class ColorValidator
      * @return bool
      * @throws InvalidHexChannelException
      */
-    public static function hexChannel(string $hex)
+    public function hexChannel(string $hex)
     {
         if (preg_match(self::HEX_CHANNEL_REGEX, $hex) === 0) {
             throw new InvalidHexChannelException($hex);
@@ -82,7 +84,7 @@ class ColorValidator
      * @return bool
      * @throws InvalidRgbChannelException
      */
-    public static function rgbChannel(int $rgb)
+    public function rgbChannel(int $rgb)
     {
         // check for 0-255 values
         if ($rgb >= self::RGB_CHANNEL_MIN && $rgb <= self::RGB_CHANNEL_MAX) {
@@ -98,7 +100,7 @@ class ColorValidator
      * @return bool
      * @throws InvalidPercentChannelException
      */
-    public static function percentChannel($rgb)
+    public function percentChannel($rgb)
     {
         // check for 0%-100%
         if (substr($rgb, -1, 1) === '%') {
@@ -118,7 +120,7 @@ class ColorValidator
      * @return bool
      * @throws InvalidAlphaChannelException
      */
-    public static function alphaChannel(float $alpha)
+    public function alphaChannel(float $alpha)
     {
         if ($alpha < self::ALPHA_CHANNEL_MIN || $alpha > self::ALPHA_CHANNEL_MAX) {
             throw new InvalidAlphaChannelException($alpha);
@@ -133,7 +135,7 @@ class ColorValidator
      * @return bool
      * @throws InvalidHueChannelException
      */
-    public static function hueChannel($hue)
+    public function hueChannel($hue)
     {
         if (is_float($hue)) {
             return true;
@@ -150,7 +152,7 @@ class ColorValidator
      * @return bool
      * @throws InvalidHexColorException
      */
-    public static function hex(string $hex)
+    public function hex(string $hex)
     {
         $matches = [];
         preg_match(self::LONG_HEX_REGEX, $hex, $matches);
@@ -158,9 +160,9 @@ class ColorValidator
             throw new InvalidHexColorException($hex);
         }
 
-        self::hexChannel($matches[1]);
-        self::hexChannel($matches[2]);
-        self::hexChannel($matches[3]);
+        $this->hexChannel($matches[1]);
+        $this->hexChannel($matches[2]);
+        $this->hexChannel($matches[3]);
 
         return true;
     }
@@ -173,7 +175,7 @@ class ColorValidator
      * @return bool
      * @throws InvalidHexColorException
      */
-    public static function shortHex(string $hex)
+    public function shortHex(string $hex)
     {
         $matches = [];
         preg_match(self::SHORT_HEX_REGEX, $hex, $matches);
@@ -182,9 +184,9 @@ class ColorValidator
             throw new InvalidHexColorException($hex);
         }
 
-        self::hexChannel($matches[1].$matches[1]);
-        self::hexChannel($matches[2].$matches[2]);
-        self::hexChannel($matches[3].$matches[3]);
+        $this->hexChannel($matches[1].$matches[1]);
+        $this->hexChannel($matches[2].$matches[2]);
+        $this->hexChannel($matches[3].$matches[3]);
 
         return true;
     }
@@ -197,7 +199,7 @@ class ColorValidator
      * @return bool
      * @throws InvalidRgbColorException
      */
-    public static function rgb(string $rgb)
+    public function rgb(string $rgb)
     {
         $matches = [];
         preg_match(self::RGB_REGEX, $rgb, $matches);
@@ -206,9 +208,9 @@ class ColorValidator
             throw new InvalidRgbColorException($rgb);
         }
 
-        self::rgbChannel((int) $matches[1]);
-        self::rgbChannel((int) $matches[2]);
-        self::rgbChannel((int) $matches[3]);
+        $this->rgbChannel((int) $matches[1]);
+        $this->rgbChannel((int) $matches[2]);
+        $this->rgbChannel((int) $matches[3]);
 
         return true;
     }
@@ -221,7 +223,7 @@ class ColorValidator
      * @return bool
      * @throws InvalidRgbaColorException
      */
-    public static function rgba(string $rgba)
+    public function rgba(string $rgba)
     {
         $matches = [];
         preg_match(self::RGBA_REGEX, $rgba, $matches);
@@ -230,10 +232,10 @@ class ColorValidator
             throw new InvalidRgbaColorException($rgba);
         }
 
-        self::rgbChannel((int) $matches[1]);
-        self::rgbChannel((int) $matches[2]);
-        self::rgbChannel((int) $matches[3]);
-        self::alphaChannel($matches[4]);
+        $this->rgbChannel((int) $matches[1]);
+        $this->rgbChannel((int) $matches[2]);
+        $this->rgbChannel((int) $matches[3]);
+        $this->alphaChannel($matches[4]);
 
         return true;
     }
@@ -246,7 +248,7 @@ class ColorValidator
      * @return bool
      * @throws InvalidRgbColorException
      */
-    public static function rgbPercent(string $rgb)
+    public function rgbPercent(string $rgb)
     {
         $matches = [];
         preg_match(self::RGB_PERCENT_REGEX, $rgb, $matches);
@@ -255,9 +257,9 @@ class ColorValidator
             throw new InvalidRgbColorException($rgb);
         }
 
-        self::percentChannel($matches[1]);
-        self::percentChannel($matches[2]);
-        self::percentChannel($matches[3]);
+        $this->percentChannel($matches[1]);
+        $this->percentChannel($matches[2]);
+        $this->percentChannel($matches[3]);
 
         return true;
     }
@@ -270,7 +272,7 @@ class ColorValidator
      * @return bool
      * @throws InvalidRgbaColorException
      */
-    public static function rgbaPercent(string $rgba)
+    public function rgbaPercent(string $rgba)
     {
         $matches = [];
         preg_match(self::RGBA_PERCENT_REGEX, $rgba, $matches);
@@ -279,10 +281,10 @@ class ColorValidator
             throw new InvalidRgbaColorException($rgba);
         }
 
-        self::percentChannel($matches[1]);
-        self::percentChannel($matches[2]);
-        self::percentChannel($matches[3]);
-        self::alphaChannel((float) $matches[4]);
+        $this->percentChannel($matches[1]);
+        $this->percentChannel($matches[2]);
+        $this->percentChannel($matches[3]);
+        $this->alphaChannel((float) $matches[4]);
 
         return true;
     }
@@ -295,7 +297,7 @@ class ColorValidator
      * @return bool
      * @throws InvalidHslColorException
      */
-    public static function hsl(string $hsl)
+    public function hsl(string $hsl)
     {
         $matches = [];
         preg_match(self::HSL_REGEX, $hsl, $matches);
@@ -304,9 +306,9 @@ class ColorValidator
             throw new InvalidHslColorException($hsl);
         }
 
-        self::hueChannel((float) $matches[1]);
-        self::percentChannel($matches[2]);
-        self::percentChannel($matches[3]);
+        $this->hueChannel((float) $matches[1]);
+        $this->percentChannel($matches[2]);
+        $this->percentChannel($matches[3]);
 
         return true;
     }
@@ -319,7 +321,7 @@ class ColorValidator
      * @return bool
      * @throws InvalidHslaColorException
      */
-    public static function hsla(string $hsla)
+    public function hsla(string $hsla)
     {
         $matches = [];
         preg_match(self::HSLA_REGEX, $hsla, $matches);
@@ -328,10 +330,10 @@ class ColorValidator
             throw new InvalidHslaColorException($hsla);
         }
 
-        self::hueChannel((float) $matches[1]);
-        self::percentChannel($matches[2]);
-        self::percentChannel($matches[3]);
-        self::alphaChannel((float) $matches[4]);
+        $this->hueChannel((float) $matches[1]);
+        $this->percentChannel($matches[2]);
+        $this->percentChannel($matches[3]);
+        $this->alphaChannel((float) $matches[4]);
 
         return true;
     }

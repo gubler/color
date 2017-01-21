@@ -28,15 +28,109 @@ class ColorParser
     protected $blue;
     /** @var float */
     protected $alpha;
+    /** @var ColorValidator */
+    protected $validator;
+    /** @var ColorConverter */
+    protected $converter;
 
     /**
      * ColorParser constructor.
      *
+     * @param string|null $color
+     */
+    public function __construct(string $color = null)
+    {
+        $this->validator = new ColorValidator();
+        $this->converter = new ColorConverter();
+
+        if ($color !== null) {
+            $this->parseColor($color);
+        }
+    }
+
+    /**
+     * Return an array of RGBA values
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'red' => $this->red,
+            'green' => $this->green,
+            'blue' => $this->blue,
+            'alpha' => $this->alpha
+        ];
+    }
+
+    /**
+     * Parse a CSS color string and return an RGBA array
+     *
+     * @param string $color
+     *
+     * @return ColorParser
+     */
+    public function parse(string $color)
+    {
+        $this->parseColor($color);
+        return $this;
+    }
+
+    /**
+     * Parse a CSS color string for type.
+     *
+     * This also checks that the color values are valid for the type.
+     *
+     * Valid return types are
+     *     - rgb
+     *     - rgba
+     *     - hsl
+     *     - hsla
+     *     - hex
+     *     - shortHex
+     *
+     * @param string $color
+     *
+     * @return string
+     * @throws InvalidColorException if string does not match a recognized color type
+     */
+    public function colorType(string $color)
+    {
+        if (preg_match(self::RGB_REGEX, $color)) {
+            $this->validator->rgb($color);
+            return 'rgb';
+        } elseif (preg_match(self::RGBA_REGEX, $color)) {
+            $this->validator->rgba($color);
+            return 'rgba';
+        } elseif (preg_match(self::RGB_PERCENT_REGEX, $color)) {
+            $this->validator->rgbPercent($color);
+            return 'rgbPercent';
+        } elseif (preg_match(self::RGBA_PERCENT_REGEX, $color)) {
+            $this->validator->rgbaPercent($color);
+            return 'rgbaPercent';
+        } elseif (preg_match(self::HSL_REGEX, $color)) {
+            $this->validator->hsl($color);
+            return 'hsl';
+        } elseif (preg_match(self::HSLA_REGEX, $color)) {
+            $this->validator->hsla($color);
+            return 'hsla';
+        } elseif (preg_match(self::LONG_HEX_REGEX, $color)) {
+            $this->validator->hex($color);
+            return 'hex';
+        } elseif (preg_match(self::SHORT_HEX_REGEX, $color)) {
+            $this->validator->shortHex($color);
+            return 'shortHex';
+        }
+
+        throw new InvalidColorException('Unrecognized color. `'.$color.'` provided.');
+    }
+
+    /**
      * @param string $color
      */
-    public function __construct(string $color)
+    protected function parseColor(string $color)
     {
-        switch(self::colorType($color)) {
+        switch($this->colorType($color)) {
             case 'rgb':
                 $this->parseRgb($color);
                 break;
@@ -65,91 +159,11 @@ class ColorParser
     }
 
     /**
-     * Return an array of RGBA values
-     *
-     * @return array
-     */
-    public function toRgbaArray()
-    {
-        return [
-            'red' => $this->red,
-            'green' => $this->green,
-            'blue' => $this->blue,
-            'alpha' => $this->alpha
-        ];
-    }
-
-    /**
-     * Parse a CSS color string and return an RGBA array
-     *
-     * @param string $color
-     *
-     * @return array
-     * @throws InvalidColorException
-     */
-    public static function parse(string $color)
-    {
-        $parser = new self($color);
-
-        return $parser->toRgbaArray();
-
-    }
-
-    /**
-     * Parse a CSS color string for type.
-     *
-     * This also checks that the color values are valid for the type.
-     *
-     * Valid return types are
-     *     - rgb
-     *     - rgba
-     *     - hsl
-     *     - hsla
-     *     - hex
-     *     - shortHex
-     *
-     * @param string $color
-     *
-     * @return string
-     * @throws InvalidColorException if string does not match a recognized color type
-     */
-    public static function colorType(string $color)
-    {
-        if (preg_match(self::RGB_REGEX, $color)) {
-            ColorValidator::rgb($color);
-            return 'rgb';
-        } elseif (preg_match(self::RGBA_REGEX, $color)) {
-            ColorValidator::rgba($color);
-            return 'rgba';
-        } elseif (preg_match(self::RGB_PERCENT_REGEX, $color)) {
-            ColorValidator::rgbPercent($color);
-            return 'rgbPercent';
-        } elseif (preg_match(self::RGBA_PERCENT_REGEX, $color)) {
-            ColorValidator::rgbaPercent($color);
-            return 'rgbaPercent';
-        } elseif (preg_match(self::HSL_REGEX, $color)) {
-            ColorValidator::hsl($color);
-            return 'hsl';
-        } elseif (preg_match(self::HSLA_REGEX, $color)) {
-            ColorValidator::hsla($color);
-            return 'hsla';
-        } elseif (preg_match(self::LONG_HEX_REGEX, $color)) {
-            ColorValidator::hex($color);
-            return 'hex';
-        } elseif (preg_match(self::SHORT_HEX_REGEX, $color)) {
-            ColorValidator::shortHex($color);
-            return 'shortHex';
-        }
-
-        throw new InvalidColorException('Unrecognized color. `'.$color.'` provided.');
-    }
-
-    /**
      * @param string $color
      */
     protected function parseRgb(string $color)
     {
-        ColorValidator::rgb($color);
+        $this->validator->rgb($color);
         $matches = [];
         preg_match(self::RGB_REGEX, $color, $matches);
 
@@ -164,7 +178,7 @@ class ColorParser
      */
     protected function parseRgba(string $color)
     {
-        ColorValidator::rgba($color);
+        $this->validator->rgba($color);
         $matches = [];
         preg_match(self::RGBA_REGEX, $color, $matches);
 
@@ -179,7 +193,7 @@ class ColorParser
      */
     protected function parseRgbPercent(string $color)
     {
-        ColorValidator::rgbPercent($color);
+        $this->validator->rgbPercent($color);
         $matches = [];
         preg_match(self::RGB_PERCENT_REGEX, $color, $matches);
 
@@ -194,7 +208,7 @@ class ColorParser
      */
     protected function parseRgbaPercent(string $color)
     {
-        ColorValidator::rgbaPercent($color);
+        $this->validator->rgbaPercent($color);
         $matches = [];
         preg_match(self::RGBA_PERCENT_REGEX, $color, $matches);
 
@@ -209,11 +223,11 @@ class ColorParser
      */
     protected function parseHsl(string $color)
     {
-        ColorValidator::hsl($color);
+        $this->validator->hsl($color);
         $matches = [];
         preg_match(self::HSL_REGEX, $color, $matches);
 
-        $rgb = ColorConverter::hslToRgb(
+        $rgb = $this->converter->hslToRgb(
             (float) $matches[1],
             (int) $matches[2],
             (int) $matches[3]
@@ -230,11 +244,11 @@ class ColorParser
      */
     protected function parseHsla(string $color)
     {
-        ColorValidator::hsla($color);
+        $this->validator->hsla($color);
         $matches = [];
         preg_match(self::HSLA_REGEX, $color, $matches);
 
-        $rgb = ColorConverter::hslToRgb(
+        $rgb = $this->converter->hslToRgb(
             (float) $matches[1],
             (int) $matches[2],
             (int) $matches[3]
@@ -251,8 +265,8 @@ class ColorParser
      */
     protected function parseHex(string $color)
     {
-        ColorValidator::hex($color);
-        $rgb = ColorConverter::hexToRgb($color);
+        $this->validator->hex($color);
+        $rgb = $this->converter->hexToRgb($color);
 
         $this->red = $rgb['red'];
         $this->green = $rgb['green'];
@@ -265,8 +279,8 @@ class ColorParser
      */
     protected function parseShortHex(string $color)
     {
-        ColorValidator::shortHex($color);
-        $rgb = ColorConverter::shortHexToRgb($color);
+        $this->validator->shortHex($color);
+        $rgb = $this->converter->shortHexToRgb($color);
 
         $this->red = $rgb['red'];
         $this->green = $rgb['green'];

@@ -12,22 +12,32 @@ class ColorConverter
     const SHORT_HEX_REGEX = '/^#?([0-9a-f])([0-9a-f])([0-9a-f])$/i';
     const LONG_HEX_REGEX = '/^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i';
 
+    /** @var ColorValidator */
+    protected $validator;
+
+    /**
+     * ColorConverter constructor.
+     */
+    public function __construct()
+    {
+        $this->validator = new ColorValidator();
+    }
     /**
      * @param string $hexValue
      *
      * @return array
      */
-    public static function hexToRgb(string $hexValue): array
+    public function hexToRgb(string $hexValue): array
     {
-        ColorValidator::hex($hexValue);
+        $this->validator->hex($hexValue);
 
         $matches = [];
         preg_match(self::LONG_HEX_REGEX, $hexValue, $matches);
 
         return [
-            'red' => self::hexChannelToRgbChannel($matches[1]),
-            'green' => self::hexChannelToRgbChannel($matches[2]),
-            'blue' => self::hexChannelToRgbChannel($matches[3]),
+            'red' => $this->hexChannelToRgbChannel($matches[1]),
+            'green' => $this->hexChannelToRgbChannel($matches[2]),
+            'blue' => $this->hexChannelToRgbChannel($matches[3]),
         ];
     }
 
@@ -36,17 +46,17 @@ class ColorConverter
      *
      * @return array
      */
-    public static function shortHexToRgb(string $hexValue): array
+    public function shortHexToRgb(string $hexValue): array
     {
-        ColorValidator::shortHex($hexValue);
+        $this->validator->shortHex($hexValue);
 
         $matches = [];
         preg_match(self::SHORT_HEX_REGEX, $hexValue, $matches);
 
         return [
-            'red' => self::hexChannelToRgbChannel($matches[1].$matches[1]),
-            'green' => self::hexChannelToRgbChannel($matches[2].$matches[2]),
-            'blue' => self::hexChannelToRgbChannel($matches[3].$matches[3]),
+            'red' => $this->hexChannelToRgbChannel($matches[1].$matches[1]),
+            'green' => $this->hexChannelToRgbChannel($matches[2].$matches[2]),
+            'blue' => $this->hexChannelToRgbChannel($matches[3].$matches[3]),
         ];
     }
 
@@ -57,11 +67,11 @@ class ColorConverter
      *
      * @return string
      */
-    public static function rgbToHex(int $red, int $green, int $blue): string
+    public function rgbToHex(int $red, int $green, int $blue): string
     {
-        $redHex = self::rgbChannelToHexChannel($red);
-        $greenHex = self::rgbChannelToHexChannel($green);
-        $blueHex = self::rgbChannelToHexChannel($blue);
+        $redHex = $this->rgbChannelToHexChannel($red);
+        $greenHex = $this->rgbChannelToHexChannel($green);
+        $blueHex = $this->rgbChannelToHexChannel($blue);
 
         return strtoupper('#'.$redHex.$greenHex.$blueHex);
     }
@@ -75,7 +85,7 @@ class ColorConverter
      *
      * @return array
      */
-    public static function hslToRgb(float $hue, int $saturation, int $luminosity)
+    public function hslToRgb(float $hue, int $saturation, int $luminosity)
     {
         $red = null;
         $green = null;
@@ -136,7 +146,7 @@ class ColorConverter
      *
      * @return array
      */
-    public static function rgbToHsl(int $red, int $green, int $blue)
+    public function rgbToHsl(int $red, int $green, int $blue)
     {
         $red /= 255;
         $green /= 255;
@@ -149,6 +159,7 @@ class ColorConverter
         } else {
             $difference = $max - $min;
             $saturation = $luminosity > 0.5 ? $difference / (2 - $max - $min) : $difference / ($max + $min);
+            $hue = null;
             switch ($max) {
                 case $red:
                     $hue = ($green - $blue) / $difference + ($green < $blue ? 6 : 0);
@@ -178,9 +189,9 @@ class ColorConverter
      *
      * @return number
      */
-    public static function hexChannelToRgbChannel(string $hex)
+    public function hexChannelToRgbChannel(string $hex)
     {
-        ColorValidator::hexChannel($hex);
+        $this->validator->hexChannel($hex);
 
         return hexdec($hex);
     }
@@ -190,9 +201,9 @@ class ColorConverter
      *
      * @return string
      */
-    public static function rgbChannelToHexChannel(float $rgb)
+    public function rgbChannelToHexChannel(float $rgb)
     {
-        ColorValidator::rgbChannel($rgb);
+        $this->validator->rgbChannel($rgb);
 
         return dechex(round($rgb));
     }

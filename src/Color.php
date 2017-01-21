@@ -24,8 +24,13 @@ class Color
     /** @var int */
     protected $luminosity;
 
+    /** @var ColorParser */
+    protected $parser;
+    /** @var ColorConverter */
+    protected $converter;
+
     // ----------------------------------------
-    // CONSTRUCTORS
+    // CONSTRUCTOR
     // ----------------------------------------
 
     /**
@@ -35,55 +40,16 @@ class Color
      */
     public function __construct(string $color)
     {
-        $rgb = ColorParser::parse($color);
+        $this->parser = new ColorParser();
+        $this->converter = new ColorConverter();
+
+        $rgb = $this->parser->parse($color)->toArray();
         $this->red = $rgb['red'];
         $this->green = $rgb['green'];
         $this->blue = $rgb['blue'];
         $this->alpha = $rgb['alpha'];
 
         $this->updateHsl();
-    }
-
-    /**
-     * Static constructor from RGBA (or RGB) values
-     *
-     * @param int   $red
-     * @param int   $green
-     * @param int   $blue
-     * @param float $alpha
-     *
-     * @return Color
-     */
-    public static function fromRgba(int $red, int $green, int $blue, float $alpha = 1.0)
-    {
-        return new self('rgba('.$red.','.$green.','.$blue.','.$alpha.')');
-    }
-
-    /**
-     * Static constructor from HSLA (or HSL) values
-     *
-     * @param float $hue
-     * @param int   $saturation
-     * @param int   $luminosity
-     * @param float $alpha
-     *
-     * @return Color
-     */
-    public static function fromHsla(float $hue, int $saturation, int $luminosity, float $alpha = 1.0)
-    {
-        return new self('hsla('.$hue.','.$saturation.'%,'.$luminosity.'%,'.$alpha.')');
-    }
-
-    /**
-     * Static constructor from hex (or short hex) string
-     *
-     * @param string $hex
-     *
-     * @return Color
-     */
-    public static function fromHex(string $hex)
-    {
-        return new self($hex);
     }
 
     // ----------------------------------------
@@ -103,7 +69,7 @@ class Color
      */
     public function rgba()
     {
-        return 'rgba('.$this->red.','.$this->green.','.$this->blue.','.$this->alpha.')';
+        return 'rgba('.$this->red.', '.$this->green.', '.$this->blue.', '.$this->alpha.')';
     }
 
     /**
@@ -111,7 +77,7 @@ class Color
      */
     public function rgb()
     {
-        return 'rgba('.$this->red.','.$this->green.','.$this->blue.')';
+        return 'rgb('.$this->red.', '.$this->green.', '.$this->blue.')';
     }
 
     /**
@@ -119,7 +85,7 @@ class Color
      */
     public function hex()
     {
-        return ColorConverter::rgbToHex($this->red, $this->green, $this->blue);
+        return $this->converter->rgbToHex($this->red, $this->green, $this->blue);
     }
 
     /**
@@ -127,7 +93,7 @@ class Color
      */
     public function hsla()
     {
-        return 'hsla('.$this->hue.','.$this->saturation.','.$this->luminosity.','.$this->alpha.')';
+        return 'hsla('.$this->hue.', '.$this->saturation.'%, '.$this->luminosity.'%, '.$this->alpha.')';
     }
 
     /**
@@ -135,7 +101,7 @@ class Color
      */
     public function hsl()
     {
-        return 'hsl('.$this->hue.','.$this->saturation.','.$this->luminosity.')';
+        return 'hsl('.$this->hue.', '.$this->saturation.'%, '.$this->luminosity.'%)';
     }
 
     // ----------------------------------------
@@ -152,7 +118,14 @@ class Color
      */
     public function setRgba(int $red, int $green, int $blue, float $alpha = 1.0): Color
     {
-        return self::fromRgba($red, $green, $blue, $alpha);
+        $this->red = $red;
+        $this->green = $green;
+        $this->blue = $blue;
+        $this->alpha = $alpha;
+
+        $this->updateHsl();
+
+        return $this;
     }
 
     /**
@@ -165,7 +138,14 @@ class Color
      */
     public function setHsla(float $hue, int $saturation, int $luminosity, float $alpha = 1.0): Color
     {
-        return self::fromHsla($hue, $saturation, $luminosity, $alpha);
+        $this->hue = $hue;
+        $this->saturation = $saturation;
+        $this->luminosity = $luminosity;
+        $this->alpha = $alpha;
+
+        $this->updateRgb();
+
+        return $this;
     }
 
     /**
@@ -175,7 +155,15 @@ class Color
      */
     public function setHex(string $hex): Color
     {
-        return self::fromHex($hex);
+        $rgb = (new ColorParser($hex))->toArray();
+        $this->red = $rgb['red'];
+        $this->green = $rgb['green'];
+        $this->blue = $rgb['blue'];
+        $this->alpha = $rgb['alpha'];
+
+        $this->updateHsl();
+
+        return $this;
     }
 
     // ----------------------------------------
@@ -183,7 +171,7 @@ class Color
     // ----------------------------------------
     protected function updateHsl()
     {
-        $hsl = ColorConverter::rgbToHsl($this->red, $this->green, $this->blue);
+        $hsl = $this->converter->rgbToHsl($this->red, $this->green, $this->blue);
 
         $this->hue = $hsl['hue'];
         $this->saturation = $hsl['saturation'];
@@ -192,7 +180,7 @@ class Color
 
     protected function updateRgb()
     {
-        $rgb = ColorConverter::hslToRgb($this->hue, $this->saturation, $this->luminosity);
+        $rgb = $this->converter->hslToRgb($this->hue, $this->saturation, $this->luminosity);
 
         $this->red = $rgb['red'];
         $this->blue = $rgb['blue'];

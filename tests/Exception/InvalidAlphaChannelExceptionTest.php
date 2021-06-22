@@ -3,20 +3,19 @@
 namespace Gubler\Color\Test\Exception;
 
 use Gubler\Color\Exception\InvalidAlphaChannelException;
+use PHPUnit\Framework\TestCase;
 
-/**
- * Class InvalidAlphaChannelExceptionTest.
- */
-class InvalidAlphaChannelExceptionTest extends \PHPUnit_Framework_TestCase
+class InvalidAlphaChannelExceptionTest extends TestCase
 {
     /**
      * @test
-     * @expectedException \Gubler\Color\Exception\InvalidAlphaChannelException
-     * @expectedExceptionCode 500
-     * @expectedExceptionMessage Invalid alpha channel value. Only values between 0 and 1 allowed. `2` provided
      */
-    public function exception_throws_proper_message()
+    public function exception_throws_proper_message(): void
     {
+        $this->expectException(InvalidAlphaChannelException::class);
+        $this->expectExceptionCode(500);
+        $this->expectExceptionMessage('Invalid alpha channel value. Only values between 0 and 1 allowed. `2` provided');
+
         throw new InvalidAlphaChannelException(2);
     }
 }

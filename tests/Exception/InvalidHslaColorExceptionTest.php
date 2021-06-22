@@ -3,20 +3,19 @@
 namespace Gubler\Color\Test\Exception;
 
 use Gubler\Color\Exception\InvalidHslaColorException;
+use PHPUnit\Framework\TestCase;
 
-/**
- * Class InvalidHslaColorExceptionTest.
- */
-class InvalidHslaColorExceptionTest extends \PHPUnit_Framework_TestCase
+class InvalidHslaColorExceptionTest extends TestCase
 {
     /**
      * @test
-     * @expectedException \Gubler\Color\Exception\InvalidHslaColorException
-     * @expectedExceptionCode 500
-     * @expectedExceptionMessage Invalid HSLA color value. `YYYY` provided.
      */
-    public function exception_throws_proper_message()
+    public function exception_throws_proper_message(): void
     {
+        $this->expectException(InvalidHslaColorException::class);
+        $this->expectExceptionCode(500);
+        $this->expectExceptionMessage('Invalid HSLA color value. `YYYY` provided.');
+
         throw new InvalidHslaColorException('YYYY');
     }
 }

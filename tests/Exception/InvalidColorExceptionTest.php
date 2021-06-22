@@ -3,42 +3,43 @@
 namespace Gubler\Color\Test\Exception;
 
 use Gubler\Color\Exception\InvalidColorException;
+use PHPUnit\Framework\TestCase;
 
-/**
- * Class InvalidColorExceptionTest.
- */
-class InvalidColorExceptionTest extends \PHPUnit_Framework_TestCase
+class InvalidColorExceptionTest extends TestCase
 {
     /**
      * @test
-     * @expectedException \Gubler\Color\Exception\InvalidColorException
-     * @expectedExceptionCode 500
-     * @expectedExceptionMessage Invalid Color Provided
      */
-    public function exception_throws_default_message_and_code()
+    public function exception_throws_default_message_and_code(): void
     {
+        $this->expectException(InvalidColorException::class);
+        $this->expectExceptionCode(500);
+        $this->expectExceptionMessage('Invalid Color Provided');
+
         throw new InvalidColorException();
     }
 
     /**
      * @test
-     * @expectedException \Gubler\Color\Exception\InvalidColorException
-     * @expectedExceptionCode 500
-     * @expectedExceptionMessage Moo
      */
-    public function exception_throws_custom_message()
+    public function exception_throws_custom_message(): void
     {
+        $this->expectException(InvalidColorException::class);
+        $this->expectExceptionCode(500);
+        $this->expectExceptionMessage('Moo');
+
         throw new InvalidColorException('Moo');
     }
 
     /**
      * @test
-     * @expectedException \Gubler\Color\Exception\InvalidColorException
-     * @expectedExceptionCode 501
-     * @expectedExceptionMessage Invalid Color Provided
      */
-    public function exception_throws_custom_code()
+    public function exception_throws_custom_code(): void
     {
+        $this->expectException(InvalidColorException::class);
+        $this->expectExceptionCode(501);
+        $this->expectExceptionMessage('Invalid Color Provided');
+
         throw new InvalidColorException('Invalid Color Provided', 501);
     }
 }

@@ -3,19 +3,13 @@
 namespace Gubler\Color\Test;
 
 use Gubler\Color\ColorConverter;
+use PHPUnit\Framework\TestCase;
 
-/**
- * Class ColorConverterTest.
- */
-class ColorConverterTest extends \PHPUnit_Framework_TestCase
+class ColorConverterTest extends TestCase
 {
-    /** @var ColorConverter */
-    protected $converter;
+    protected ColorConverter $converter;
 
-    /**
-     * Set Up.
-     */
-    public function setUp()
+    public function setUp(): void
     {
         $this->converter = new ColorConverter();
     }
@@ -24,7 +18,7 @@ class ColorConverterTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers \Gubler\Color\ColorConverter
      */
-    public function converts_short_hex_to_rgb()
+    public function converts_short_hex_to_rgb(): void
     {
         $color = [
             'red' => 17,
@@ -39,7 +33,7 @@ class ColorConverterTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers \Gubler\Color\ColorConverter
      */
-    public function converts_hex_to_rgb()
+    public function converts_hex_to_rgb(): void
     {
         $color = [
             'red' => 171,
@@ -55,7 +49,7 @@ class ColorConverterTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers \Gubler\Color\ColorConverter
      */
-    public function converts_rgb_to_hex()
+    public function converts_rgb_to_hex(): void
     {
         $color = '#ABCDEF';
 
@@ -66,7 +60,7 @@ class ColorConverterTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers \Gubler\Color\ColorConverter
      */
-    public function converts_hsl_to_rgb()
+    public function converts_hsl_to_rgb(): void
     {
         $color = [
             'red' => 191,
@@ -129,7 +123,7 @@ class ColorConverterTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers \Gubler\Color\ColorConverter
      */
-    public function converts_rgb_to_hsl()
+    public function converts_rgb_to_hsl(): void
     {
         $color = [
             'hue' => 350,

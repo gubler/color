@@ -3,20 +3,19 @@
 namespace Gubler\Color\Test\Exception;
 
 use Gubler\Color\Exception\InvalidPercentChannelException;
+use PHPUnit\Framework\TestCase;
 
-/**
- * Class InvalidPercentChannelExceptionTest.
- */
-class InvalidPercentChannelExceptionTest extends \PHPUnit_Framework_TestCase
+class InvalidPercentChannelExceptionTest extends TestCase
 {
     /**
      * @test
-     * @expectedException \Gubler\Color\Exception\InvalidPercentChannelException
-     * @expectedExceptionCode 500
-     * @expectedExceptionMessage Invalid percent channel value. Only values 0%-100% allowed. `4` provided
      */
-    public function exception_throws_proper_message()
+    public function exception_throws_proper_message(): void
     {
+        $this->expectException(InvalidPercentChannelException::class);
+        $this->expectExceptionCode(500);
+        $this->expectExceptionMessage('Invalid percent channel value. Only values 0%-100% allowed. `4` provided');
+
         throw new InvalidPercentChannelException(4);
     }
 }

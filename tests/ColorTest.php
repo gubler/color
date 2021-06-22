@@ -3,17 +3,13 @@
 namespace Gubler\Color\Test;
 
 use Gubler\Color\Color;
+use PHPUnit\Framework\TestCase;
 
-/**
- * Class ColorTest.
- */
-class ColorTest extends \PHPUnit_Framework_TestCase
+class ColorTest extends TestCase
 {
-    /** @var Color */
-    protected $color;
+    protected Color $color;
 
-    /** set up */
-    public function setUp()
+    public function setUp(): void
     {
         // rgb(18, 49, 35)
         // hsl(153, 46%, 13%)
@@ -21,51 +17,51 @@ class ColorTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @test */
-    public function can_instantiate_class()
+    public function can_instantiate_class(): void
     {
         self::assertInstanceOf(Color::class, $this->color);
     }
 
     /** @test */
-    public function as_string_returns_rgba()
+    public function as_string_returns_rgba(): void
     {
         $this->assertEquals('rgba(18, 49, 35, 1)', (string) $this->color);
     }
 
     /** @test */
-    public function rgba_returns_rgba()
+    public function rgba_returns_rgba(): void
     {
         $this->assertEquals('rgba(18, 49, 35, 1)', $this->color->rgba());
     }
 
     /** @test */
-    public function rgb_returns_rgb()
+    public function rgb_returns_rgb(): void
     {
         $this->assertEquals('rgb(18, 49, 35)', $this->color->rgb());
     }
 
     /** @test */
-    public function hsla_returns_hsla()
+    public function hsla_returns_hsla(): void
     {
         $this->assertEquals('hsla(153, 46%, 13%, 1)', $this->color->hsla());
     }
 
     /** @test */
-    public function hsl_returns_hsl()
+    public function hsl_returns_hsl(): void
     {
         $this->assertEquals('hsl(153, 46%, 13%)', $this->color->hsl());
     }
 
     /** @test */
-    public function hex_returns_hex()
+    public function hex_returns_hex(): void
     {
         $this->assertEquals('#123123', $this->color->hex());
     }
 
     /** @test */
-    public function set_rgba_updates_color()
+    public function set_rgba_updates_color(): void
     {
-        $this->color->setRgba(50, 100, 150, 1.0);
+        $this->color->setRgba(50, 100, 150);
 
         self::assertEquals('rgba(50, 100, 150, 1)', $this->color->rgba());
         self::assertEquals('#326496', $this->color->hex());
@@ -73,7 +69,7 @@ class ColorTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @test */
-    public function set_hsla_updates_color()
+    public function set_hsla_updates_color(): void
     {
         $this->color->setHsla(210, 50, 39, 1);
 
@@ -83,7 +79,7 @@ class ColorTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @test */
-    public function set_hex_updates_color()
+    public function set_hex_updates_color(): void
     {
         $this->color->setHex('#326496');
 
@@ -93,7 +89,7 @@ class ColorTest extends \PHPUnit_Framework_TestCase
     }
 
     /** @test */
-    public function calculates_contrast_text_color()
+    public function calculates_contrast_text_color(): void
     {
         $this->color->setHex('#ef4444');
         self::assertEquals('#FFFFFF', $this->color->contrastTextColor()->hex());

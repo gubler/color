@@ -3,20 +3,19 @@
 namespace Gubler\Color\Test\Exception;
 
 use Gubler\Color\Exception\InvalidHexChannelException;
+use PHPUnit\Framework\TestCase;
 
-/**
- * Class InvalidHexChannelExceptionTest.
- */
-class InvalidHexChannelExceptionTest extends \PHPUnit_Framework_TestCase
+class InvalidHexChannelExceptionTest extends TestCase
 {
     /**
      * @test
-     * @expectedException \Gubler\Color\Exception\InvalidHexChannelException
-     * @expectedExceptionCode 500
-     * @expectedExceptionMessage Invalid hex channel value. Only values between 00 and FF allowed. `GG` provided
      */
-    public function exception_throws_proper_message()
+    public function exception_throws_proper_message(): void
     {
+        $this->expectException(InvalidHexChannelException::class);
+        $this->expectExceptionCode(500);
+        $this->expectExceptionMessage('Invalid hex channel value. Only values between 00 and FF allowed. `GG` provided');
+
         throw new InvalidHexChannelException('GG');
     }
 }

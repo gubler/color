@@ -3,20 +3,19 @@
 namespace Gubler\Color\Test\Exception;
 
 use Gubler\Color\Exception\InvalidRgbColorException;
+use PHPUnit\Framework\TestCase;
 
-/**
- * Class InvalidRgbColorExceptionTest.
- */
-class InvalidRgbColorExceptionTest extends \PHPUnit_Framework_TestCase
+class InvalidRgbColorExceptionTest extends TestCase
 {
     /**
      * @test
-     * @expectedException \Gubler\Color\Exception\InvalidRgbColorException
-     * @expectedExceptionCode 500
-     * @expectedExceptionMessage Invalid RGB color value. `moo` provided
      */
-    public function exception_throws_proper_message()
+    public function exception_throws_proper_message(): void
     {
+        $this->expectException(InvalidRgbColorException::class);
+        $this->expectExceptionCode(500);
+        $this->expectExceptionMessage('Invalid RGB color value. `moo` provided');
+
         throw new InvalidRgbColorException('moo');
     }
 }

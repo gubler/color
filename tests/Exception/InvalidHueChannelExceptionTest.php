@@ -3,20 +3,19 @@
 namespace Gubler\Color\Test\Exception;
 
 use Gubler\Color\Exception\InvalidHueChannelException;
+use PHPUnit\Framework\TestCase;
 
-/**
- * Class InvalidHueChannelExceptionTest.
- */
-class InvalidHueChannelExceptionTest extends \PHPUnit_Framework_TestCase
+class InvalidHueChannelExceptionTest extends TestCase
 {
     /**
      * @test
-     * @expectedException \Gubler\Color\Exception\InvalidHueChannelException
-     * @expectedExceptionCode 500
-     * @expectedExceptionMessage Invalid hue channel value. Only float values allowed. `GG` provided
      */
-    public function exception_throws_proper_message()
+    public function exception_throws_proper_message(): void
     {
+        $this->expectException(InvalidHueChannelException::class);
+        $this->expectExceptionCode(500);
+        $this->expectExceptionMessage('Invalid hue channel value. Only float values allowed. `GG` provided');
+
         throw new InvalidHueChannelException('GG');
     }
 }

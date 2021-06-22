@@ -3,40 +3,39 @@
 namespace Gubler\Color\Test;
 
 use Gubler\Color\ColorParser;
+use Gubler\Color\Exception\InvalidColorException;
+use PHPUnit\Framework\TestCase;
 
-/**
- * Class ColorParserTest.
- */
-class ColorParserTest extends \PHPUnit_Framework_TestCase
+class ColorParserTest extends TestCase
 {
-    /** @var ColorParser */
-    protected $parser;
+    protected ColorParser $parser;
 
-    /** Set up */
-    public function setUp()
+    public function setUp(): void
     {
         $this->parser = new ColorParser();
     }
 
     /**
      * @test
-     * @expectedException \Gubler\Color\Exception\InvalidColorException
-     * @expectedExceptionMessage Unrecognized color. `moo` provided.
      * @covers \Gubler\Color\ColorParser
      */
-    public function parse_throws_error_with_unrecognized_color()
+    public function parse_throws_error_with_unrecognized_color(): void
     {
+        $this->expectException(InvalidColorException::class);
+        $this->expectExceptionMessage('Unrecognized color. `moo` provided.');
+
         $this->parser->parse('moo');
     }
 
     /**
      * @test
-     * @expectedException \Gubler\Color\Exception\InvalidColorException
-     * @expectedExceptionMessage Unrecognized color. `moo` provided.
      * @covers \Gubler\Color\ColorParser
      */
-    public function color_type_throws_error_with_unrecognized_color()
+    public function color_type_throws_error_with_unrecognized_color(): void
     {
+        $this->expectException(InvalidColorException::class);
+        $this->expectExceptionMessage('Unrecognized color. `moo` provided.');
+
         $this->parser->colorType('moo');
     }
 
@@ -44,7 +43,7 @@ class ColorParserTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers \Gubler\Color\ColorParser
      */
-    public function parses_short_hex()
+    public function parses_short_hex(): void
     {
         $color = [
             'red' => 17,
@@ -61,7 +60,7 @@ class ColorParserTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers \Gubler\Color\ColorParser
      */
-    public function parses_hex()
+    public function parses_hex(): void
     {
         $color = [
             'red' => 171,
@@ -78,7 +77,7 @@ class ColorParserTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers \Gubler\Color\ColorParser
      */
-    public function parses_rgb()
+    public function parses_rgb(): void
     {
         $color = [
             'red' => 10,
@@ -95,7 +94,7 @@ class ColorParserTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers \Gubler\Color\ColorParser
      */
-    public function parses_rgb_percent()
+    public function parses_rgb_percent(): void
     {
         $color = [
             'red' => 128,
@@ -112,7 +111,7 @@ class ColorParserTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers \Gubler\Color\ColorParser
      */
-    public function parses_rgba()
+    public function parses_rgba(): void
     {
         $color = [
             'red' => 10,
@@ -129,7 +128,7 @@ class ColorParserTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers \Gubler\Color\ColorParser
      */
-    public function parses_rgba_percent()
+    public function parses_rgba_percent(): void
     {
         $color = [
             'red' => 128,
@@ -146,7 +145,7 @@ class ColorParserTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers \Gubler\Color\ColorParser
      */
-    public function parses_hsl()
+    public function parses_hsl(): void
     {
         $color = [
             'red' => 64,
@@ -163,7 +162,7 @@ class ColorParserTest extends \PHPUnit_Framework_TestCase
      * @test
      * @covers \Gubler\Color\ColorParser
      */
-    public function parses_hsla()
+    public function parses_hsla(): void
     {
         $color = [
             'red' => 255,

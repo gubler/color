@@ -4,44 +4,38 @@ namespace Gubler\Color\Test;
 
 use Gubler\Color\ColorParser;
 use Gubler\Color\Exception\InvalidColorException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(className: ColorParser::class)]
 class ColorParserTest extends TestCase
 {
     protected ColorParser $parser;
 
-    public function setUp(): void
-    {
-        $this->parser = new ColorParser();
-    }
-
     /**
      * @test
-     * @covers \Gubler\Color\ColorParser
      */
     public function parse_throws_error_with_unrecognized_color(): void
     {
         $this->expectException(InvalidColorException::class);
         $this->expectExceptionMessage('Unrecognized color. `moo` provided.');
 
-        $this->parser->parse('moo');
+        new ColorParser('moo');
     }
 
     /**
      * @test
-     * @covers \Gubler\Color\ColorParser
      */
     public function color_type_throws_error_with_unrecognized_color(): void
     {
         $this->expectException(InvalidColorException::class);
         $this->expectExceptionMessage('Unrecognized color. `moo` provided.');
 
-        $this->parser->colorType('moo');
+        new ColorParser('moo');
     }
 
     /**
      * @test
-     * @covers \Gubler\Color\ColorParser
      */
     public function parses_short_hex(): void
     {
@@ -53,12 +47,10 @@ class ColorParserTest extends TestCase
         ];
         $parser = new ColorParser('#123');
         self::assertEquals($color, $parser->toArray());
-        self::assertEquals($color, $this->parser->parse('#123')->toArray());
     }
 
     /**
      * @test
-     * @covers \Gubler\Color\ColorParser
      */
     public function parses_hex(): void
     {
@@ -70,12 +62,10 @@ class ColorParserTest extends TestCase
         ];
         $parser = new ColorParser('#abcdef');
         self::assertEquals($color, $parser->toArray());
-        self::assertEquals($color, $this->parser->parse('#abcdef')->toArray());
     }
 
     /**
      * @test
-     * @covers \Gubler\Color\ColorParser
      */
     public function parses_rgb(): void
     {
@@ -87,12 +77,10 @@ class ColorParserTest extends TestCase
         ];
         $parser = new ColorParser('rgb(10,20,30)');
         self::assertEquals($color, $parser->toArray());
-        self::assertEquals($color, $this->parser->parse('rgb(10,20,30)')->toArray());
     }
 
     /**
      * @test
-     * @covers \Gubler\Color\ColorParser
      */
     public function parses_rgb_percent(): void
     {
@@ -104,12 +92,10 @@ class ColorParserTest extends TestCase
         ];
         $parser = new ColorParser('rgb(50%, 75%, 100%)');
         self::assertEquals($color, $parser->toArray());
-        self::assertEquals($color, $this->parser->parse('rgb(50%, 75%, 100%)')->toArray());
     }
 
     /**
      * @test
-     * @covers \Gubler\Color\ColorParser
      */
     public function parses_rgba(): void
     {
@@ -121,12 +107,10 @@ class ColorParserTest extends TestCase
         ];
         $parser = new ColorParser('rgba(10,20,30,.5)');
         self::assertEquals($color, $parser->toArray());
-        self::assertEquals($color, $this->parser->parse('rgba(10,20,30, .5)')->toArray());
     }
 
     /**
      * @test
-     * @covers \Gubler\Color\ColorParser
      */
     public function parses_rgba_percent(): void
     {
@@ -138,12 +122,10 @@ class ColorParserTest extends TestCase
         ];
         $parser = new ColorParser('rgba(50%, 75%, 100%, 0.75)');
         self::assertEquals($color, $parser->toArray());
-        self::assertEquals($color, $this->parser->parse('rgba(50%, 75%, 100%, 0.75)')->toArray());
     }
 
     /**
      * @test
-     * @covers \Gubler\Color\ColorParser
      */
     public function parses_hsl(): void
     {
@@ -155,12 +137,10 @@ class ColorParserTest extends TestCase
         ];
         $parser = new ColorParser('hsl(123.456, 50%, 50%)');
         self::assertEquals($color, $parser->toArray());
-        self::assertEquals($color, $this->parser->parse('hsl(123.456, 50%, 50%)')->toArray());
     }
 
     /**
      * @test
-     * @covers \Gubler\Color\ColorParser
      */
     public function parses_hsla(): void
     {
@@ -171,8 +151,6 @@ class ColorParserTest extends TestCase
             'alpha' => 0.77,
         ];
         $parser = new ColorParser('hsla(350, 100%, 50%, 0.77)');
-        self::assertInstanceOf(ColorParser::class, $parser);
         self::assertEquals($color, $parser->toArray());
-        self::assertEquals($color, $this->parser->parse('hsla(350, 100%, 50%, 0.77)')->toArray());
     }
 }

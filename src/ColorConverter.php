@@ -2,33 +2,33 @@
 
 namespace Gubler\Color;
 
-/**
- * Class Converter.
- */
-class ColorConverter
+use Gubler\Color\Exception\InvalidHexChannelException;
+use Gubler\Color\Exception\InvalidHexColorException;
+use Gubler\Color\Exception\InvalidRgbChannelException;
+
+final class ColorConverter
 {
-    const SHORT_HEX_REGEX = '/^#?([0-9a-f])([0-9a-f])([0-9a-f])$/i';
-    const LONG_HEX_REGEX = '/^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i';
+    public const SHORT_HEX_REGEX = '/^#?([0-9a-f])([0-9a-f])([0-9a-f])$/i';
+    public const LONG_HEX_REGEX = '/^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i';
 
-    /** @var ColorValidator */
-    protected $validator;
+    private ColorValidator $validator;
 
-    /**
-     * ColorConverter constructor.
-     */
     public function __construct()
     {
         $this->validator = new ColorValidator();
     }
 
     /**
-     * @param string $hexValue
+     * @return array{'red': int, 'green': int, 'blue': int}
      *
-     * @return array
+     * @throws InvalidHexChannelException
+     * @throws InvalidHexColorException
      */
     public function hexToRgb(string $hexValue): array
     {
-        $this->validator->hex($hexValue);
+        if (!$this->validator->isHexColorString($hexValue)) {
+            throw new InvalidHexColorException($hexValue);
+        }
 
         $matches = [];
         preg_match(self::LONG_HEX_REGEX, $hexValue, $matches);
@@ -41,50 +41,37 @@ class ColorConverter
     }
 
     /**
-     * @param string $hexValue
-     *
-     * @return array
+     * @return array{'red': int, 'green': int, 'blue': int}
      */
     public function shortHexToRgb(string $hexValue): array
     {
-        $this->validator->shortHex($hexValue);
+        if (!$this->validator->isShortHex($hexValue)) {
+            throw new InvalidHexColorException($hexValue);
+        }
 
         $matches = [];
         preg_match(self::SHORT_HEX_REGEX, $hexValue, $matches);
 
         return [
-            'red' => $this->hexChannelToRgbChannel($matches[1].$matches[1]),
-            'green' => $this->hexChannelToRgbChannel($matches[2].$matches[2]),
-            'blue' => $this->hexChannelToRgbChannel($matches[3].$matches[3]),
+            'red' => $this->hexChannelToRgbChannel($matches[1] . $matches[1]),
+            'green' => $this->hexChannelToRgbChannel($matches[2] . $matches[2]),
+            'blue' => $this->hexChannelToRgbChannel($matches[3] . $matches[3]),
         ];
     }
 
-    /**
-     * @param int $red
-     * @param int $green
-     * @param int $blue
-     *
-     * @return string
-     */
     public function rgbToHex(int $red, int $green, int $blue): string
     {
         $redHex = $this->rgbChannelToHexChannel($red);
         $greenHex = $this->rgbChannelToHexChannel($green);
         $blueHex = $this->rgbChannelToHexChannel($blue);
 
-        return strtoupper('#'.$redHex.$greenHex.$blueHex);
+        return strtoupper('#' . $redHex . $greenHex . $blueHex);
     }
 
     /**
-     * Convert HSL values to RGB array.
-     *
-     * @param float $hue
-     * @param int   $saturation
-     * @param int   $luminosity
-     *
-     * @return array
+     * @return array{'red': int, 'green': int, 'blue': int}
      */
-    public function hslToRgb(float $hue, int $saturation, int $luminosity)
+    public function hslToRgb(float $hue, int $saturation, int $luminosity): array
     {
         $hue /= 60;
         if ($hue < 0) {
@@ -138,13 +125,9 @@ class ColorConverter
     }
 
     /**
-     * @param int $red
-     * @param int $green
-     * @param int $blue
-     *
-     * @return array
+     * @return array{'hue': float, 'saturation': int, 'luminosity': int}
      */
-    public function rgbToHsl(int $red, int $green, int $blue)
+    public function rgbToHsl(int $red, int $green, int $blue): array
     {
         $red /= 255;
         $green /= 255;
@@ -152,7 +135,7 @@ class ColorConverter
         $max = max($red, $green, $blue);
         $min = min($red, $green, $blue);
         $luminosity = ($max + $min) / 2;
-        if ($max == $min) {
+        if ($max === $min) {
             $hue = $saturation = 0;
         } else {
             $difference = $max - $min;
@@ -171,37 +154,31 @@ class ColorConverter
             }
             $hue /= 6;
         }
-        $hue = (float) round($hue * 360);
+        $hue = round($hue * 360);
         $saturation = (int) round($saturation * 100);
         $luminosity = (int) round($luminosity * 100);
 
         return [
-            'hue' => (float) round($hue, 2),
+            'hue' => round($hue, 2),
             'saturation' => (int) round($saturation),
             'luminosity' => (int) round($luminosity),
         ];
     }
 
-    /**
-     * @param string $hex
-     *
-     * @return number
-     */
-    public function hexChannelToRgbChannel(string $hex)
+    private function hexChannelToRgbChannel(string $hex): int
     {
-        $this->validator->hexChannel($hex);
+        if (!$this->validator->isHexChannel($hex)) {
+            throw new InvalidHexChannelException($hex);
+        }
 
-        return hexdec($hex);
+        return (int) hexdec($hex);
     }
 
-    /**
-     * @param int $rgb
-     *
-     * @return string
-     */
-    public function rgbChannelToHexChannel(int $rgb)
+    private function rgbChannelToHexChannel(int $rgb): string
     {
-        $this->validator->rgbChannel($rgb);
+        if (!$this->validator->isRGBChannel($rgb)) {
+            throw new InvalidRgbChannelException($rgb);
+        }
 
         return str_pad(dechex($rgb), 2, '0', STR_PAD_LEFT);
     }

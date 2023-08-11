@@ -1,9 +1,5 @@
 # Gubler/Color
 
-[![Build Status](https://travis-ci.org/gubler/color.svg?branch=master)](https://travis-ci.org/gubler/color)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/gubler/color/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/gubler/color/?branch=master)
-[![StyleCI Status](https://styleci.io/repos/79394502/shield)](https://styleci.io/repos/79394502)
-
 Color is a CSS color object library. It allows you to create a `Color` object and get multiple CSS color styles from it.
 
 ## Installation

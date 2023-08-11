@@ -2,46 +2,22 @@
 
 namespace Gubler\Color;
 
-/**
- * Class Color.
- */
-class Color
+final class Color
 {
-    /** @var int */
-    protected $red;
-    /** @var int */
-    protected $green;
-    /** @var int */
-    protected $blue;
-    /** @var float */
-    protected $alpha;
-    /** @var float */
-    protected $hue;
-    /** @var int */
-    protected $saturation;
-    /** @var int */
-    protected $luminosity;
+    private int $red;
+    private int $green;
+    private int $blue;
+    private float $alpha;
+    private float $hue;
+    private int $saturation;
+    private int $luminosity;
+    private ColorConverter $converter;
 
-    /** @var ColorParser */
-    protected $parser;
-    /** @var ColorConverter */
-    protected $converter;
-
-    // ----------------------------------------
-    // CONSTRUCTOR
-    // ----------------------------------------
-
-    /**
-     * Construct from string.
-     *
-     * @param string $color
-     */
     public function __construct(string $color)
     {
-        $this->parser = new ColorParser();
         $this->converter = new ColorConverter();
 
-        $rgb = $this->parser->parse($color)->toArray();
+        $rgb = (new ColorParser($color))->toArray();
         $this->red = $rgb['red'];
         $this->green = $rgb['green'];
         $this->blue = $rgb['blue'];
@@ -50,61 +26,35 @@ class Color
         $this->updateHsl();
     }
 
-    // ----------------------------------------
-    // OUTPUT
-    // ----------------------------------------
-
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->rgba();
     }
 
-    /**
-     * @return string
-     */
-    public function rgba()
+    public function rgba(): string
     {
-        return 'rgba('.$this->red.', '.$this->green.', '.$this->blue.', '.$this->alpha.')';
+        return 'rgba(' . $this->red . ', ' . $this->green . ', ' . $this->blue . ', ' . $this->alpha . ')';
     }
 
-    /**
-     * @return string
-     */
-    public function rgb()
+    public function rgb(): string
     {
-        return 'rgb('.$this->red.', '.$this->green.', '.$this->blue.')';
+        return 'rgb(' . $this->red . ', ' . $this->green . ', ' . $this->blue . ')';
     }
 
-    /**
-     * @return string
-     */
-    public function hex()
+    public function hex(): string
     {
         return $this->converter->rgbToHex($this->red, $this->green, $this->blue);
     }
 
-    /**
-     * @return string
-     */
-    public function hsla()
+    public function hsla(): string
     {
-        return 'hsla('.$this->hue.', '.$this->saturation.'%, '.$this->luminosity.'%, '.$this->alpha.')';
+        return 'hsla(' . $this->hue . ', ' . $this->saturation . '%, ' . $this->luminosity . '%, ' . $this->alpha . ')';
     }
 
-    /**
-     * @return string
-     */
-    public function hsl()
+    public function hsl(): string
     {
-        return 'hsl('.$this->hue.', '.$this->saturation.'%, '.$this->luminosity.'%)';
+        return 'hsl(' . $this->hue . ', ' . $this->saturation . '%, ' . $this->luminosity . '%)';
     }
-
-    // ----------------------------------------
-    // CONTRAST TEXT COLOR
-    // ----------------------------------------
 
     /**
      * Returns a Color of black or white to contrast against current color.
@@ -113,27 +63,15 @@ class Color
      *
      * @return Color
      */
-    public function contrastTextColor()
+    public function contrastTextColor(): Color
     {
         if ($this->perceivedBrightness() > 128) {
-            return new self('rgba(0, 0, 0, '.$this->alpha.')');
+            return new self('rgba(0, 0, 0, ' . $this->alpha . ')');
         }
 
-        return new self('rgba(255, 255, 255, '.$this->alpha.')');
+        return new self('rgba(255, 255, 255, ' . $this->alpha . ')');
     }
 
-    // ----------------------------------------
-    // UPDATERS
-    // ----------------------------------------
-
-    /**
-     * @param int   $red
-     * @param int   $green
-     * @param int   $blue
-     * @param float $alpha
-     *
-     * @return Color
-     */
     public function setRgba(int $red, int $green, int $blue, float $alpha = 1.0): Color
     {
         $this->red = $red;
@@ -146,14 +84,6 @@ class Color
         return $this;
     }
 
-    /**
-     * @param float $hue
-     * @param int   $saturation
-     * @param int   $luminosity
-     * @param float $alpha
-     *
-     * @return Color
-     */
     public function setHsla(float $hue, int $saturation, int $luminosity, float $alpha = 1.0): Color
     {
         $this->hue = $hue;
@@ -166,11 +96,6 @@ class Color
         return $this;
     }
 
-    /**
-     * @param string $hex
-     *
-     * @return Color
-     */
     public function setHex(string $hex): Color
     {
         $rgb = (new ColorParser($hex))->toArray();
@@ -184,10 +109,7 @@ class Color
         return $this;
     }
 
-    // ----------------------------------------
-    // INTERNAL UPDATERS
-    // ----------------------------------------
-    protected function updateHsl()
+    private function updateHsl(): void
     {
         $hsl = $this->converter->rgbToHsl($this->red, $this->green, $this->blue);
 
@@ -196,7 +118,7 @@ class Color
         $this->luminosity = $hsl['luminosity'];
     }
 
-    protected function updateRgb()
+    private function updateRgb(): void
     {
         $rgb = $this->converter->hslToRgb($this->hue, $this->saturation, $this->luminosity);
 
@@ -205,22 +127,16 @@ class Color
         $this->green = $rgb['green'];
     }
 
-    // ----------------------------------------
-    // Internal converter
-    // ----------------------------------------
-
     /**
      * Converts color to YIQ color space and determines perceived brightness
      * on a 0-255 scale.
-     *
-     * @return int
      */
-    protected function perceivedBrightness()
+    private function perceivedBrightness(): int
     {
-        return (
+        return (int) floor((
             ($this->red * 299) +
             ($this->green * 587) +
             ($this->blue * 114)
-        ) / 1000;
+        ) / 1000);
     }
 }
